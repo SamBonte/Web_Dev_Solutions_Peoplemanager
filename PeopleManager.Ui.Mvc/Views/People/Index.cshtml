@@ -1,0 +1,26 @@
+﻿
+@model IList<Person>
+
+<h1List of People></h1List>
+
+<table class="table table-dark table-striped">
+    <thead>
+    <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+    </tr>
+    
+    </thead>
+    <tbody>
+    @foreach (var person in Model)
+    {
+        //@ na spatie want spatie gezien als HTML, @C-sharp
+        // Hoe aan lijst ? Model = property en hier hebben we een lijst meegegeven in PeopleController
+
+        //voor iedere persoon patrial view uitvoeren
+        <partial name="PersonRowPartial" model="person"/>
+    }
+    </tbody>
+</table>
+
