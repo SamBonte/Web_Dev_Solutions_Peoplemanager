@@ -1,7 +1,11 @@
+using PeopleManager.Ui.Mvc.Core;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddSingleton<Database>();
 
 var app = builder.Build();
 
@@ -11,6 +15,12 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+}
+else
+{
+    // zeggen tegen service provider => Geef me een database, EN We weten dat hij geregistreerd is
+    var database = app.Services.GetRequiredService<Database>();
+    database.Seed();
 }
 
 app.UseHttpsRedirection();

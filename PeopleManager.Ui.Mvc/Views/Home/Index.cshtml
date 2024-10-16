@@ -1,8 +1,23 @@
-﻿@{
+﻿@model IList<Person>
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome Bavo</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h1>Who is who?</h1>
+<h2>Employee of the month</h2>
+@{
+    var employeeOfTheMonth = Model.FirstOrDefault();
+    if (employeeOfTheMonth is not null)
+    {
+        <partial name="PersonCardPartial" model="employeeOfTheMonth" />
+    }
+}
+<h2>Employees</h2>
+<div class="row">
+    @foreach (var person in Model)
+    {
+        <div class="col-lg-3 col-md-4 col-sm m-3">
+            <partial name="PersonCardPartial" model="person" />
+        </div>
+    }
 </div>
