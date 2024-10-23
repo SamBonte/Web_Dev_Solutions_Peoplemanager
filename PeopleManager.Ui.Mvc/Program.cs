@@ -1,15 +1,20 @@
+using Microsoft.EntityFrameworkCore;
 using PeopleManager.Ui.Mvc.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services to the container. | Dependencies/services registreren in container
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddSingleton<Database>();
+// AddDbContext => scoped 
+builder.Services.AddDbContext<PeopleManagerDbContext>(options =>
+{
+    options.UseInMemoryDatabase(nameof(PeopleManagerDbContext));
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline. | Provider
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -19,7 +24,9 @@ if (!app.Environment.IsDevelopment())
 else
 {
     // zeggen tegen service provider => Geef me een database, EN We weten dat hij geregistreerd is
-    var database = app.Services.GetRequiredService<Database>();
+    // iets dat disposable is = proper opkuisen na uitvoering
+    using var scope = app.Services.CreateScope();
+    var database = scope.ServiceProvider.GetRequiredService<PeopleManagerDbContext>();
     database.Seed();
 }
 

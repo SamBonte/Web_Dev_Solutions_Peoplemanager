@@ -8,23 +8,25 @@ namespace PeopleManager.Ui.Mvc.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly Database _database;
+        private readonly PeopleManagerDbContext _peopleManagerDbContext;
 
-        public HomeController(Database database)
+        public HomeController(PeopleManagerDbContext peopleManagerDbContext)
         {
-            _database = database;
+            _peopleManagerDbContext = peopleManagerDbContext;
         }
 
         public IActionResult Index()
         {
-            var people = _database.People;
+            // zolang op DbContext geen ToList = gewoon een intentie/vraag MAAR DOET IE NIETS !!!
+            // dus toList zal zorgen dat er van de beschrijving lijst een echte lijst wordt gemaakt die view 
+            var people = _peopleManagerDbContext.People.ToList();
             return View(people);
         }
 
-        public IActionResult Details(int id)
+        /*public IActionResult Details(int id)
         {
             // geef voor elke persoon in de lijst de persoon met het gevraagd Id terug
-            var person = _database.People.FirstOrDefault(person => person.Id == id);
+            var person = _peopleManagerDbContext.People.FirstOrDefault(person => person.Id == id);
             if (person is null)
             {
                 // als er iets misloopt terug naar index pagina
@@ -33,7 +35,7 @@ namespace PeopleManager.Ui.Mvc.Controllers
 
             // Nog een view bijmaken
            return View(person);
-        }
+        }*/
 
 
         public IActionResult Privacy()

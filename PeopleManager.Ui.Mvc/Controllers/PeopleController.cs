@@ -4,18 +4,18 @@ using PeopleManager.Ui.Mvc.Models;
 
 namespace PeopleManager.Ui.Mvc.Controllers
 {
-    public class PeopleController(Database database) : Controller
+    public class PeopleController(PeopleManagerDbContext peopleManagerDbContext) : Controller
     {
         // dependency injection => in dependency readonly => vermijd fouten bv. overschrijven veld
-        private readonly Database _database = database;
+        private readonly PeopleManagerDbContext _peopleManagerDbContext = peopleManagerDbContext;
 
-        /*public PeopleController(Database database)
+        /*public PeopleController(PeopleManagerDbContext peopleManagerDbContext)
         {
-            _database = database;
+            _peopleManagerDbContext = peopleManagerDbContext;
         }*/
         public IActionResult Index()
         {
-            var people = _database.People;
+            var people = _peopleManagerDbContext.People.ToList();
             return View(people);
             /*
              * Probeer geen geneste methodes => voor breakpoints/debuggen zéér slecht, minder leesbaar
