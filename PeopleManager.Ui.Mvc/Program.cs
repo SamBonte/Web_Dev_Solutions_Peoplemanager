@@ -6,9 +6,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container. | Dependencies/services registreren in container
 builder.Services.AddControllersWithViews();
 
+var connectionString = builder.Configuration.GetConnectionString(nameof(PeopleManagerDbContext));
 // AddDbContext => scoped 
 builder.Services.AddDbContext<PeopleManagerDbContext>(options =>
 {
+    //options.UseSqlServer(connectionString);
     options.UseInMemoryDatabase(nameof(PeopleManagerDbContext));
 });
 
@@ -26,8 +28,14 @@ else
     // zeggen tegen service provider => Geef me een database, EN We weten dat hij geregistreerd is
     // iets dat disposable is = proper opkuisen na uitvoering
     using var scope = app.Services.CreateScope();
-    var database = scope.ServiceProvider.GetRequiredService<PeopleManagerDbContext>();
-    database.Seed();
+    var dbContext = scope.ServiceProvider.GetRequiredService<PeopleManagerDbContext>();
+
+    if (dbContext.Database.IsInMemory())
+    {
+        dbContext.Seed();
+    }
+    
+    
 }
 
 app.UseHttpsRedirection();
