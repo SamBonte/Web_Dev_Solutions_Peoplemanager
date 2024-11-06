@@ -13,6 +13,8 @@ namespace PeopleManager.Ui.Mvc.Controllers
         {
             _peopleManagerDbContext = peopleManagerDbContext;
         }*/
+
+        [HttpGet] //Juiste Http methodes zetten om onvoorzienigheden te vermijden
         public IActionResult Index()
         {
             var people = _peopleManagerDbContext.People.ToList();
@@ -21,6 +23,23 @@ namespace PeopleManager.Ui.Mvc.Controllers
              * Probeer geen geneste methodes => voor breakpoints/debuggen zéér slecht, minder leesbaar
              * return View(GetPeople());
              */
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult Create(Person person)
+        {
+            /*Om nieuwe persoon toe te voegen*/
+            _peopleManagerDbContext.People.Add(person);
+            /*Toevoegen aan EntityFramework sqlserver*/
+            _peopleManagerDbContext.SaveChanges();
+            /*NIET return View("Index") -> zal in url nog steeds ../Create en om index te renderen lijst nodig zie Index-action PeopleController*/
+            return RedirectToAction("Index");
         }
     }
 }
