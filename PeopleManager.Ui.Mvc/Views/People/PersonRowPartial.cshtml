@@ -4,4 +4,9 @@
     <td>@Model.FirstName</td>
     <td>@Model.LastName</td>
     <td>@Model.Email</td>
+    <td>
+        <!--Home/People/Index/{id}-->
+        <!--kun je ook viaasp-route-key="@Model.Id" Home/People/Index/?={id}-->
+        <a asp-action="Edit" class="btn btn-primary" asp-route-id="@Model.Id">Edit</a>
+    </td>
 </tr>

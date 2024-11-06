@@ -1,0 +1,21 @@
+﻿@model Person
+
+<!--dingen in het vet zoals form => zullen bij gerendered worden, is csharp !-->
+
+<form method="post">
+    <div class="mb-3">
+        <label asp-for="FirstName" class="form-label"></label>
+        <input asp-for="FirstName" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label asp-for="LastName" class="form-label"></label>
+        <input asp-for="LastName" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control">
+    </div>
+    
+    <a asp-action="Index" class="btn btn-secondary">&lt; Back</a>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
