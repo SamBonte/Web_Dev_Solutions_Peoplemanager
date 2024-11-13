@@ -6,7 +6,9 @@
     <td>@Model.Email</td>
     <td>
         <!--Home/People/Index/{id}-->
-        <!--kun je ook viaasp-route-key="@Model.Id" Home/People/Index/?={id}-->
+        <!--kun je ook viaasp-route-key="ApenstaartjeModel.Id" Home/People/Index/?={id}-->
         <a asp-action="Edit" class="btn btn-primary" asp-route-id="@Model.Id">Edit</a>
+        <!--btn om persoon te verwijderen-->
+        <a asp-action="Delete" class="btn btn-danger" asp-route-id="@Model.Id">Delete</a>
     </td>
 </tr>

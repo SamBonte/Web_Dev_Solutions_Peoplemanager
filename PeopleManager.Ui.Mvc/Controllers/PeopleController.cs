@@ -44,6 +44,55 @@ namespace PeopleManager.Ui.Mvc.Controllers
             return View(person);
         }
 
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            // we willen vragen of men zeker is om persoon "x" te verwijderen
+            var person = _peopleManagerDbContext.People.FirstOrDefault(p => p.Id == id);
+            if (person is null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View(person);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            /*
+            OPTIE1: Meer info, eigenlijk niet nodig = 1 query meer doen, maar is oké 
+            var person = _peopleManagerDbContext.People.FirstOrDefault(p => p.Id == id);
+            if (person is null)
+            {
+                return RedirectToAction("Index");
+            }*/
+
+            /*
+            OPTIE2: Query minder uitvoeren, nadeel als al gedelete = kan ie niet weten = niet erg, bestaat niet = weet hij ook niet
+             */
+            var person = new Person()
+            {
+                Id = id,
+                FirstName = string.Empty,
+                LastName = string.Empty
+            };
+
+            // Attach ziet hem als een nieuwe
+            // Modify ziet als verandert
+            // Remove ziet id om te verwijderen
+            _peopleManagerDbContext.People.Attach(person);
+
+            _peopleManagerDbContext.People.Remove(person);
+            // wijzigingen toepassen:
+            _peopleManagerDbContext.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+
+
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Edit([FromRoute]int id, [FromForm]Person person)
         // in Controller hebben we Routing ingesteld: "{controller=Home}/{action=Index}/{id?}" 

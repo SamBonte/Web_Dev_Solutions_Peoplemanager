@@ -1,21 +1,16 @@
 ﻿@model Person
 
 <!--dingen in het vet zoals form => zullen bij gerendered worden, is csharp !-->
+@{
+    ViewBag.Title = "Edit Person";
+}
+
+<h1>@ViewBag.Title</h1>
 
 <form method="post">
-    <div class="mb-3">
-        <label asp-for="FirstName" class="form-label"></label>
-        <input asp-for="FirstName" class="form-control">
-    </div>
-    <div class="mb-3">
-        <label asp-for="LastName" class="form-label"></label>
-        <input asp-for="LastName" class="form-control">
-    </div>
-    <div class="mb-3">
-        <label asp-for="Email" class="form-label"></label>
-        <input asp-for="Email" class="form-control">
-    </div>
-    
+    <!--We maken gebruik van onze aangemaakte partial, zo vermijden we reduplicatie, model moet gedef. worden anders zal hij niks in de veldjes invullen om te editeren-->
+    <partial name="CreateEditPartial" model="Model"/>
+
     <a asp-action="Index" class="btn btn-secondary">&lt; Back</a>
     <button type="submit" class="btn btn-primary">Save</button>
 </form>

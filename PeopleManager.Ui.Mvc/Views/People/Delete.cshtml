@@ -1,0 +1,26 @@
+﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@model Person
+
+@{
+    ViewBag.Title = "Delete Person";
+}
+
+<h1>@ViewBag.Title</h1>
+
+@*
+   Ja/Nee vrg ? = Ja Nee opties
+   <p>Are you sure you want to delete @Model.FirstName @Model.LastName (@Model.Email)?</p>
+   
+   <a asp-action="Index" class="btn btn-secondary">< No</a>
+   Id meegeven zodat je weet wie moet worden verwijdert 
+   <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-secondary"></a>
+*@
+
+<!--Ja/Nee vrg ? = Ja Nee opties-->
+<p>Are you sure you want to delete @Model.FirstName @Model.LastName (@Model.Email)?</p>
+
+<form asp-action="DeleteConfirmed" asp-route-id="@Model.Id" method="post">
+    <!--<input type="hidden" name="Id" value="@Model.Id"/>-->
+    <a asp-action="Index" class="btn btn-secondary">&lt; No</a>
+    <button type="submit" class="btn btn-secondary">&lt; Yes</button>
+</form>
