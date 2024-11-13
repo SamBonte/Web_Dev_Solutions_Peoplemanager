@@ -19,8 +19,10 @@
 <!--Ja/Nee vrg ? = Ja Nee opties-->
 <p>Are you sure you want to delete @Model.FirstName @Model.LastName (@Model.Email)?</p>
 
-<form asp-action="DeleteConfirmed" asp-route-id="@Model.Id" method="post">
-    <!--<input type="hidden" name="Id" value="@Model.Id"/>-->
+<!--Als we gewoon form mooi willen houden, in peoplecontroller [Route="People/Delete/{id:int}] toevoegen bij DeleteConfirmed methode om te zorgen dat
+    we html form netjes houdt.
+-->
+<form method="post">
     <a asp-action="Index" class="btn btn-secondary">&lt; No</a>
     <button type="submit" class="btn btn-secondary">&lt; Yes</button>
 </form>
