@@ -101,6 +101,14 @@ namespace PeopleManager.Ui.Mvc.Controllers
         // Beter om te scheiden voor duidelijkheid = veiligheid. Id = om te zoeken, person = blokje met veranderingen
 
         {
+            if (!ModelState.IsValid)
+            {
+                return View(person);
+            }
+
+
+
+
             var dbPerson = _peopleManagerDbContext.People.FirstOrDefault(p => p.Id == id);
             if (dbPerson is null)
             {
@@ -119,8 +127,14 @@ namespace PeopleManager.Ui.Mvc.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
+        // Create([FromForm]Person person) = zeggen enkel persoon uit form accepteren als parameter
         public IActionResult Create([FromForm]Person person) 
         {
+            if (!ModelState.IsValid)
+            {
+                return View(person);
+            }
+
             /*Om nieuwe persoon toe te voegen*/
             _peopleManagerDbContext.People.Add(person);
             /*Toevoegen aan EntityFramework sqlserver*/

@@ -11,8 +11,11 @@ namespace PeopleManager.Ui.Mvc.Models
         public int Id { get; set; }
 
         [DisplayName("First Name")]
+        //[Required(ErrorMessage = "Je moet dit invullen")] // zegt aan gebruiker, voornaam moet meegeven worden
+        [Required] // voor ons dit genoeg
         public required string FirstName {get; set; }
         [DisplayName("Last Name")]
+        [Required]
         public required string LastName {get; set; }
         [EmailAddress] // zeggen dat input type="email"
         public string? Email {get; set; }
