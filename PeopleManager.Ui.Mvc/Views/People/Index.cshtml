@@ -27,3 +27,42 @@
     </tbody>
 </table>
 
+@section Modals
+{
+    <!-- Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Delete Person</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this person?</p>
+                </div>
+                <div class="modal-footer">
+                    <form asp-action="DeleteConfirmed" method="post">
+                        <input type="hidden" name="Id"/>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                        <button type="submit" class="btn btn-primary">Yes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section Scripts
+{
+    <script>
+        /*.click(p) => zorgt voor het koppelen van eventlistener en ontkoppelen*/
+        /* sender = op wat je geklikt hebt, args = info over click | sender overbodig = this*/
+        $("button[data-mode='delete']").on("click",function(){
+            /* $(this) maakt van html this een J-query obj. waar methode data() id kan lezen*/
+            let id = $(this).data("id");
+            /* selecteer enkel input element met name veld = Id ENKEL in deleteModal zoeken*/
+            $("input[name='Id']", "#deleteModal").val(id);
+        });
+
+    </script>
+}
+
