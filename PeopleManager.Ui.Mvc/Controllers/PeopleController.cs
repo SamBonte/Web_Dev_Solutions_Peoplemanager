@@ -130,6 +130,12 @@ namespace PeopleManager.Ui.Mvc.Controllers
         // Create([FromForm]Person person) = zeggen enkel persoon uit form accepteren als parameter
         public IActionResult Create([FromForm]Person person) 
         {
+            /* Zelf een custom Error / validatie
+            if (person.FirstName == "Magere" && person.LastName == "Hein")
+            {
+                ModelState.AddModelError(string.Empty, "We don't like your kind here...");
+            }*/
+
             if (!ModelState.IsValid)
             {
                 return View(person);
