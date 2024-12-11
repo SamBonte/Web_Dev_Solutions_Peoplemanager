@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using PeopleManager.Ui.Mvc.Core;
+using PeopleManager.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
