@@ -35,12 +35,14 @@ namespace PeopleManager.Ui.Mvc.Controllers
         public IActionResult Edit(int id)
         {
             // FirstOrDefault() gaat er van uit dat id kan bestaan of niet
-            var person = _personService.Update(id, _personService.Get(id));
+            var person = _personService.Get(id);
+            
             if (person is null)
             {
                 return RedirectToAction("Index");
             }
-            
+            person = _personService.Update(id, person);
+
             return View(person);
         }
 
