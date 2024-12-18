@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PeopleManager.Repository;
 using PeopleManager.Model;
+using PeopleManager.Services;
 
 namespace PeopleManager.Ui.Mvc.Controllers
 {
-    public class PeopleController(PeopleManagerDbContext peopleManagerDbContext) : Controller
+    public class PeopleController(PersonService personService) : Controller
     {
         // dependency injection => in dependency readonly => vermijd fouten bv. overschrijven veld
-        private readonly PeopleManagerDbContext _peopleManagerDbContext = peopleManagerDbContext;
+        private readonly PersonService _personService = personService;
 
         /*public PeopleController(PeopleManagerDbContext peopleManagerDbContext)
         {
@@ -17,8 +18,7 @@ namespace PeopleManager.Ui.Mvc.Controllers
         [HttpGet] //Juiste Http methodes zetten om onvoorzienigheden te vermijden
         public IActionResult Index()
         {
-            var people = _peopleManagerDbContext.People.ToList();
-            return View(people);
+            return View(_personService.Find());
             /*
              * Probeer geen geneste methodes => voor breakpoints/debuggen zéér slecht, minder leesbaar
              * return View(GetPeople());
@@ -35,7 +35,7 @@ namespace PeopleManager.Ui.Mvc.Controllers
         public IActionResult Edit(int id)
         {
             // FirstOrDefault() gaat er van uit dat id kan bestaan of niet
-            var person = _peopleManagerDbContext.People.FirstOrDefault(p => p.Id == id);
+            var person = _personService.Update(id, _personService.Get(id));
             if (person is null)
             {
                 return RedirectToAction("Index");
@@ -48,7 +48,7 @@ namespace PeopleManager.Ui.Mvc.Controllers
         public IActionResult Delete(int id)
         {
             // we willen vragen of men zeker is om persoon "x" te verwijderen
-            var person = _peopleManagerDbContext.People.FirstOrDefault(p => p.Id == id);
+            var person = _personService.Get(id);
             if (person is null)
             {
                 return RedirectToAction("Index");
@@ -73,21 +73,8 @@ namespace PeopleManager.Ui.Mvc.Controllers
             /*
             OPTIE2: Query minder uitvoeren, nadeel als al gedelete = kan ie niet weten = niet erg, bestaat niet = weet hij ook niet
              */
-            var person = new Person()
-            {
-                Id = id,
-                FirstName = string.Empty,
-                LastName = string.Empty
-            };
-
-            // Attach ziet hem als een nieuwe
-            // Modify ziet als verandert
-            // Remove ziet id om te verwijderen
-            _peopleManagerDbContext.People.Attach(person);
-
-            _peopleManagerDbContext.People.Remove(person);
-            // wijzigingen toepassen:
-            _peopleManagerDbContext.SaveChanges();
+            
+            _personService.Delete(id);
 
             return RedirectToAction("Index");
         }
@@ -106,22 +93,7 @@ namespace PeopleManager.Ui.Mvc.Controllers
                 return View(person);
             }
 
-
-
-
-            var dbPerson = _peopleManagerDbContext.People.FirstOrDefault(p => p.Id == id);
-            if (dbPerson is null)
-            {
-                return RedirectToAction("Index");
-            }
-
-            // EntityFramework gaat kijken wat er moet veranderd worden en ENKEL dat loggen als changed
-            // enkel de dbPerson heeft tracking om veranderingen op te merken en toe te passen op database
-            dbPerson.FirstName = person.FirstName;
-            dbPerson.LastName = person.LastName;
-            dbPerson.Email = person.Email;
-            // Ons werk opslaan
-            _peopleManagerDbContext.SaveChanges();
+            _personService.Update(id, person);
             // Na aanpassing terug naar Index pagina
             return RedirectToAction("Index");
         }
@@ -142,9 +114,8 @@ namespace PeopleManager.Ui.Mvc.Controllers
             }
 
             /*Om nieuwe persoon toe te voegen*/
-            _peopleManagerDbContext.People.Add(person);
-            /*Toevoegen aan EntityFramework sqlserver*/
-            _peopleManagerDbContext.SaveChanges();
+            _personService.Create(person);
+            
             /*NIET return View("Index") -> zal in url nog steeds ../Create en om index te renderen lijst nodig zie Index-action PeopleController*/
             return RedirectToAction("Index");
         }

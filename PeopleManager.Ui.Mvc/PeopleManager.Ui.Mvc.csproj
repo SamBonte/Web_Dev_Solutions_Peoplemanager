@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\PeopleManager.Model\PeopleManager.Model.csproj" />
     <ProjectReference Include="..\PeopleManager.Repository\PeopleManager.Repository.csproj" />
+    <ProjectReference Include="..\PeopleManager.Services\PeopleManager.Services.csproj" />
   </ItemGroup>
 
 </Project>
