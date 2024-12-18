@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using PeopleManager.Model;
 using PeopleManager.Repository;
 
@@ -20,7 +21,9 @@ namespace PeopleManager.Services
         //Find = lijst opvragen van personen
         public IList<Person> Find()
         {
-            return _dbContext.People.ToList();
+            return _dbContext.People
+                .Include(p => p.Function) // inner join SQL om ook functies te krijgen
+                .ToList();
         }
 
         //Get(id) = 1 specifieke ophalen, hier op basis van id

@@ -5,6 +5,16 @@
     <td>@Model.LastName</td>
     <td>@Model.Email</td>
     <td>
+        @if (Model.FunctionId.HasValue)
+        {
+            @: @Model.Function.Name
+        }
+        else
+        {
+            @: No Function assigned
+        }
+    </td>
+    <td>
         <!--Home/People/Index/{id}-->
         <!--kun je ook viaasp-route-key="ApenstaartjeModel.Id" Home/People/Index/?={id}-->
         <a asp-action="Edit" class="btn btn-primary" asp-route-id="@Model.Id">Edit</a>
