@@ -12,6 +12,7 @@ var connectionString = builder.Configuration.GetConnectionString(nameof(PeopleMa
 builder.Services.AddDbContext<PeopleManagerDbContext>(options =>
 {
     //options.UseSqlServer(connectionString);
+    //
     options.UseInMemoryDatabase(nameof(PeopleManagerDbContext));
 });
 
